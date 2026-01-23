@@ -8,12 +8,26 @@
   },
   "cells": [
     {
-      "cell_type": "code",
-      "execution_count": null,
-      "outputs": [],
       "id": "495f8bf6-9e7c-4e80-a050-6940d617c0da",
-      "metadata": {},
-      "source": ""
+      "cell_type": "code",
+      "source": "//单链表\r\nclass ListNode {\r\n    int val;\r\n    ListNode next;\r\n    ListNode(int x) { val = x; }\r\n}\r\n\r\n// 输入一个数组，转换为一条单链表\r\nListNode createLinkedList(int[] arr) {\r\n    if (arr == null || arr.length == 0) {\r\n        return null;\r\n    }\r\n    ListNode head = new ListNode(arr[0]);\r\n    ListNode cur = head;\r\n    for (int i = 1; i < arr.length; i++) {\r\n        cur.next = new ListNode(arr[i]);\r\n        cur = cur.next;\r\n    }\r\n    return head;\r\n}",
+      "metadata": {
+        "language": "java",
+        "id": "495f8bf6-9e7c-4e80-a050-6940d617c0da",
+        "executionSummary": {
+          "executionOrder": 1,
+          "success": true
+        }
+      },
+      "execution_count": 1,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {},
+          "metadata": {},
+          "execution_count": 1
+        }
+      ]
     }
   ]
 }
