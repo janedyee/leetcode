@@ -1,0 +1,86 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 5,
+  "metadata": {
+    "language_info": {
+      "name": "java"
+    }
+  },
+  "cells": [
+    {
+      "id": "51feee0f-1dce-4dab-b8a9-4a346ceff0d6",
+      "cell_type": "code",
+      "source": "public class ArrayDemo {\r\n    public static void main(String[] args) {\r\n        int[] arr = new int[10];\r\n        arr[0] = 1;\r\n        arr[1] = 2;\r\n        \r\n        int a = arr[1];\r\n        System.out.print(a);\r\n    }\r\n}",
+      "metadata": {
+        "language": "java",
+        "id": "51feee0f-1dce-4dab-b8a9-4a346ceff0d6",
+        "executionSummary": {
+          "executionOrder": 8,
+          "success": true
+        }
+      },
+      "execution_count": 8,
+      "outputs": []
+    },
+    {
+      "id": "0d0e20b1-c797-438e-bd13-74022dea3da7",
+      "cell_type": "code",
+      "source": "//数组扩容\r\nclass ArrayUtil {\r\n    public static int[] grow(int[] oldArray) {\r\n        int newLength = oldArray.length * 2;\r\n        int[] newArray = new int[newLength];\r\n        for (int i = 0; i < oldArray.length; i++) {\r\n            newArray[i] = oldArray[i];\r\n        }\r\n        return newArray;\r\n    }\r\n}",
+      "metadata": {
+        "language": "java",
+        "id": "0d0e20b1-c797-438e-bd13-74022dea3da7",
+        "executionSummary": {
+          "executionOrder": 3,
+          "success": true
+        }
+      },
+      "execution_count": 3,
+      "outputs": []
+    },
+    {
+      "id": "44389256-c889-4756-a7d7-85d4477c2dde",
+      "cell_type": "code",
+      "source": "//数组删除（中间）\r\nint arr[] = {1, 2, 3, 4, 5};\r\nint i=2;\r\nfor(int j=i;j<arr.length-1;j++){\r\n    arr[j]=arr[j++];\r\n}",
+      "metadata": {
+        "language": "java",
+        "id": "44389256-c889-4756-a7d7-85d4477c2dde",
+        "executionSummary": {
+          "executionOrder": 4,
+          "success": true
+        }
+      },
+      "execution_count": 4,
+      "outputs": []
+    },
+    {
+      "id": "6a9d6415-c2a9-431b-af57-618423fc3c38",
+      "cell_type": "code",
+      "source": "// 创建动态数组\r\n// 不用显式指定数组大小，它会根据实际存储的元素数量自动扩缩容\r\nArrayList<Integer> arr = new ArrayList<>();\r\n\r\nfor (int i = 0; i < 10; i++) {\r\n    // 在末尾追加元素，时间复杂度 O(1)\r\n    arr.add(i);\r\n}\r\n\r\n// 在中间插入元素，时间复杂度 O(N)\r\n// 在索引 2 的位置插入元素 666\r\narr.add(2, 666);\r\n\r\n// 在头部插入元素，时间复杂度 O(N)\r\narr.add(0, -1);\r\n\r\n// 删除末尾元素，时间复杂度 O(1)\r\narr.remove(arr.size() - 1);\r\n\r\n// 删除中间元素，时间复杂度 O(N)\r\n// 删除索引 2 的元素\r\narr.remove(2);\r\n\r\n// 根据索引查询元素，时间复杂度 O(1)\r\nint a = arr.get(0);\r\n\r\n// 根据索引修改元素，时间复杂度 O(1)\r\narr.set(0, 100);\r\n\r\n// 根据元素值查找索引，时间复杂度 O(N)\r\nint index = arr.indexOf(666);",
+      "metadata": {
+        "language": "java",
+        "id": "6a9d6415-c2a9-431b-af57-618423fc3c38",
+        "executionSummary": {
+          "executionOrder": 6,
+          "success": true
+        }
+      },
+      "execution_count": 6,
+      "outputs": []
+    },
+    {
+      "id": "a4462776-c399-47ac-ad4c-ee823789360b",
+      "cell_type": "code",
+      "source": "//动态数组的实现\r\nimport java.util.Arrays;\r\nimport java.util.Iterator;\r\nimport java.util.NoSuchElementException;\r\n\r\n\r\npublic class MyArrayList<E>{\r\n    private E[] data;\r\n    private int size;//当前数组所含有的元素\r\n    private static final int INIT_CAPACITY=10;\r\n    public MyArrayList() {\r\n        this(INIT_CAPACITY);\r\n    }//无参初始化\r\n    @SuppressWarnings(\"unchecked\")\r\n    public MyArrayList(int capacity) {\r\n        data = (E[]) new Object[capacity];\r\n        size = 0;\r\n    }//有参初始化\r\n        // 增\r\n    public void addLast(E e) {\r\n        int cap = data.length;\r\n        // 看 data 数组容量够不够\r\n        if (size == cap) {\r\n            resize(2 * cap);\r\n        }\r\n        // 在尾部插入元素\r\n        data[size] = e;\r\n        size++;\r\n    }\r\n    public void add(int index, E e) {\r\n        // 检查索引越界\r\n        checkPositionIndex(index);\r\n\r\n        int cap = data.length;\r\n        // 看 data 数组容量够不够\r\n        if (size == cap) {\r\n            resize(2 * cap);\r\n        }\r\n\r\n        // 搬移数据 data[index..] -> data[index+1..]\r\n        // 给新元素腾出位置\r\n        for (int i = size - 1; i >= index; i--) {\r\n            data[i + 1] = data[i];\r\n        }\r\n\r\n        // 插入新元素\r\n        data[index] = e;\r\n\r\n        size++;\r\n    }\r\n\r\n    public void addFirst(E e) {\r\n        add(0, e);\r\n    }\r\n\r\n    // 删\r\n    public E removeLast() {\r\n        if (size == 0) {\r\n            throw new NoSuchElementException();\r\n        }\r\n        int cap = data.length;\r\n        // 可以缩容，节约空间\r\n        if (size == cap / 4) {\r\n            resize(cap / 2);\r\n        }\r\n\r\n        E deletedVal = data[size - 1];\r\n        // 删除最后一个元素\r\n        // 必须给最后一个元素置为 null，否则会内存泄漏\r\n        data[size - 1] = null;\r\n        size--;\r\n\r\n        return deletedVal;\r\n    }\r\n\r\n    public E remove(int index) {\r\n        // 检查索引越界\r\n        checkElementIndex(index);\r\n\r\n        int cap = data.length;\r\n        // 可以缩容，节约空间\r\n        if (size == cap / 4) {\r\n            resize(cap / 2);\r\n        }\r\n\r\n        E deletedVal = data[index];\r\n\r\n        // 搬移数据 data[index+1..] -> data[index..]\r\n        for (int i = index + 1; i < size; i++) {\r\n            data[i - 1] = data[i];\r\n        }\r\n\r\n        data[size - 1] = null;\r\n        size--;\r\n\r\n        return deletedVal;\r\n    }\r\n\r\n    public E removeFirst() {\r\n        return remove(0);\r\n    }\r\n\r\n    // 查\r\n    public E get(int index) {\r\n        // 检查索引越界\r\n        checkElementIndex(index);\r\n\r\n        return data[index];\r\n    }\r\n\r\n    // 改\r\n    public E set(int index, E element) {\r\n        // 检查索引越界\r\n        checkElementIndex(index);\r\n        // 修改数据\r\n        E oldVal = data[index];\r\n        data[index] = element;\r\n        return oldVal;\r\n    }\r\n\r\n    // 工具方法\r\n    public int size() {\r\n        return size;\r\n    }\r\n\r\n    public boolean isEmpty() {\r\n        return size == 0;\r\n    }\r\n\r\n    // 将 data 的容量改为 newCap\r\n    @SuppressWarnings(\"unchecked\")\r\n    private void resize(int newCap) {\r\n        E[] temp = (E[]) new Object[newCap];\r\n\r\n        for (int i = 0; i < size; i++) {\r\n            temp[i] = data[i];\r\n        }\r\n\r\n        data = temp;\r\n    }\r\n\r\n    private boolean isElementIndex(int index) {\r\n        return index >= 0 && index < size;\r\n    }\r\n\r\n    private boolean isPositionIndex(int index) {\r\n        return index >= 0 && index <= size;\r\n    }\r\n\r\n    \r\n    // 检查 index 索引位置是否可以存在元素\r\n    private void checkElementIndex(int index) {\r\n        if (!isElementIndex(index))\r\n            throw new IndexOutOfBoundsException(\"Index: \" + index + \", Size: \" + size);\r\n    }\r\n\r\n    \r\n    // 检查 index 索引位置是否可以添加元素\r\n    private void checkPositionIndex(int index) {\r\n        if (!isPositionIndex(index))\r\n            throw new IndexOutOfBoundsException(\"Index: \" + index + \", Size: \" + size);\r\n    }\r\n\r\n    private void display() {\r\n        System.out.println(\"size = \" + size + \" cap = \" + data.length);\r\n        System.out.println(Arrays.toString(data));\r\n    }\r\n\r\n\r\n    public static void main(String[] args) {\r\n        // 初始容量设置为 3\r\n        MyArrayList<Integer> arr = new MyArrayList<>(3);\r\n\r\n        // 添加 5 个元素\r\n        for (int i = 1; i <= 5; i++) {\r\n            arr.addLast(i);\r\n        }\r\n\r\n        arr.remove(3);\r\n        arr.add(1, 9);\r\n        arr.addFirst(100);\r\n        int val = arr.removeLast();\r\n\r\n        for (int i = 0; i < arr.size(); i++) {\r\n            System.out.println(arr.get(i));\r\n        }\r\n    }\r\n\r\n}\r\n",
+      "metadata": {
+        "language": "java",
+        "id": "a4462776-c399-47ac-ad4c-ee823789360b",
+        "executionSummary": {
+          "executionOrder": 15,
+          "success": true
+        }
+      },
+      "execution_count": 15,
+      "outputs": []
+    }
+  ]
+}
